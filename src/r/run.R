@@ -35,6 +35,15 @@ write(
   ,append=T)
 
 
+write(
+  x = '@echo off'
+  ,file = './src/cmd/runApp_fullscreen.bat'
+  ,append = F)
+
+write(
+  x=paste0("start chrome --kiosk ",ip.port)
+  ,file = './src/cmd/runApp_fullscreen.bat'
+  ,append=T)
 
 # host and run application ------------------------------------------------
 
