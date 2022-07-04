@@ -1,0 +1,51 @@
+setwd(abulily::get_directory())
+
+setwd('../../')
+
+
+ip   <- '127.0.0.1'
+port <- sample(6666:10214,1)
+# port=7272
+ip.port <- paste0('http://',ip,':',port)
+
+
+# create batch to host the Application ------------------------------------
+
+write(
+  x = '@echo off'
+  ,file = './src/cmd/hostApp.bat'
+  ,append = F)
+
+write(
+  x=paste0('"C:\\Program Files\\R\\R-4.0.5\\bin\\x64\\RScript.exe" "%~dp0..\\r\\app\\hostApp.r" ',ip,' ',port)
+  ,file = './src/cmd/hostApp.bat'
+  ,append=T)
+
+
+# create batch to run the application -------------------------------------
+
+write(
+  x = '@echo off'
+  ,file = './src/cmd/runApp.bat'
+  ,append = F)
+
+write(
+  x=paste0("start chrome --app=",ip.port)
+  ,file = './src/cmd/runApp.bat'
+  ,append=T)
+
+
+
+# host and run application ------------------------------------------------
+
+
+system('./src/cmd/hostApp.bat',wait = F,invisible = T)
+
+# to make sure the app is hosted before trying
+# to open is, let the program sleep for x seconds.
+# probably unnecessary, but in a (slow) VPN environment
+# I saw cases it was opening an empty webpage.
+# Sys.sleep(5)  
+
+system('./src/cmd/runApp.bat',wait = F,invisible = T)
+
